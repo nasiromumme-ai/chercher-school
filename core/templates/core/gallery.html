@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Gallery — Chercher Secondary School{% endblock %}
+{% block content %}
+
+<div class="container mt-5 mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="fw-bold">School Gallery</h1>
+    </div>
+    
+    <div class="row g-4">
+        {% for img in images %}
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm border-0">
+                    <img src="{{ img.image.url }}" class="card-img-top" alt="{{ img.title }}" style="height: 250px; object-fit: cover;">
+                    <div class="card-body bg-light">
+                        <h5 class="card-title fw-bold text-center mb-0">{{ img.title }}</h5>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="col-12">
+                <div class="alert alert-info border-0 shadow-sm text-center py-5">
+                    <i class="fas fa-images fa-3x mb-3 text-muted"></i>
+                    <h4>No images in the gallery yet.</h4>
+                    <p class="mb-0">Check back later for photos of our school events!</p>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

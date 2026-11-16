@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block title %}About Us — Chercher SS{% endblock %}
+{% block content %}
+
+<div class="container mt-5 mb-5">
+    <h1 class="fw-bold text-center mb-4">About Chercher Secondary School</h1>
+    
+    <!-- Director's Message Section -->
+    {% if director %}
+    <div class="row align-items-center bg-light rounded shadow-sm p-4 mb-5">
+        <div class="col-md-4 text-center mb-3 mb-md-0">
+            {% if director.photo %}
+                <img src="{{ director.photo.url }}" class="img-fluid rounded-circle shadow" style="width: 250px; height: 250px; object-fit: cover;" alt="{{ director.name }}">
+            {% else %}
+                <div class="bg-secondary text-white rounded-circle d-inline-flex align-items-center justify-content-center shadow" style="width: 250px; height: 250px;">
+                    <i class="fas fa-user-tie fa-5x"></i>
+                </div>
+            {% endif %}
+        </div>
+        <div class="col-md-8">
+            <h3 class="fw-bold text-primary">Message from the {{ director.role }}</h3>
+            <h5 class="text-muted mb-3">{{ director.name }}</h5>
+            <p class="lead" style="font-style: italic;">"{{ director.message|default:'Welcome to Chercher Secondary School. We are committed to providing the best education for your children.' }}"</p>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- School Structure Section -->
+    <h2 class="fw-bold mb-4 text-center">School Leadership Structure</h2>
+    <div class="row g-4 mb-5 justify-content-center">
+        {% for person in structure %}
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm text-center">
+                {% if person.photo %}
+                    <img src="{{ person.photo.url }}" class="card-img-top" alt="{{ person.name }}" style="height: 250px; object-fit: cover;">
+                {% else %}
+                    <div class="bg-secondary text-white d-flex align-items-center justify-content-center" style="height: 250px;">
+                        <i class="fas fa-user fa-4x"></i>
+                    </div>
+                {% endif %}
+                <div class="card-body bg-light">
+                    <h5 class="card-title fw-bold">{{ person.name }}</h5>
+                    <p class="card-text text-primary fw-bold">{{ person.role }}</p>
+                    {% if person.message %}
+                        <p class="card-text small text-muted">{{ person.message }}</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% empty %}
+            <div class="col-12 text-center text-muted">
+                <p>Structure information will be added soon.</p>
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- Top Students Hall of Fame -->
+    <h2 class="fw-bold mb-4 text-center text-success"><i class="fas fa-trophy"></i> Top Students Hall of Fame</h2>
+    <div class="row g-4">
+        {% for student in top_students %}
+        <div class="col-md-3">
+            <div class="card h-100 border-0 shadow-sm text-center">
+                {% if student.photo %}
+                    <img src="{{ student.photo.url }}" class="card-img-top" alt="{{ student.name }}" style="height: 200px; object-fit: cover;">
+                {% else %}
+                    <div class="bg-dark text-white d-flex align-items-center justify-content-center" style="height: 200px;">
+                        <i class="fas fa-graduation-cap fa-4x"></i>
+                    </div>
+                {% endif %}
+                <div class="card-body bg-light">
+                    <h5 class="card-title fw-bold">{{ student.name }}</h5>
+                    <span class="badge bg-success mb-2">{{ student.year }}</span>
+                    <p class="card-text fw-bold text-danger mb-1">{{ student.score }}</p>
+                    <small class="text-muted">{{ student.grade }}</small>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+            <div class="col-12 text-center text-muted">
+                <p>Top student records will be added soon.</p>
+            </div>
+        {% endfor %}
+    </div>
+
+</div>
+{% endblock %}

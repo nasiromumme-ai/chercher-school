@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Our Teachers — Chercher SS{% endblock %}
+{% block content %}
+
+<div class="container mt-5 mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="fw-bold">Our Teachers</h1>
+    </div>
+    
+    <div class="row g-4">
+        {% for teacher in teachers %}
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm border-0 text-center">
+                    {% if teacher.image %}
+                        <img src="{{ teacher.image.url }}" class="card-img-top" alt="{{ teacher.name }}" style="height: 250px; object-fit: cover;">
+                    {% else %}
+                        <div class="bg-secondary text-white d-flex align-items-center justify-content-center" style="height: 250px;">
+                            <i class="fas fa-user-tie fa-4x opacity-50"></i>
+                        </div>
+                    {% endif %}
+                    <div class="card-body bg-light">
+                        <h5 class="card-title fw-bold text-primary">{{ teacher.name }}</h5>
+                        <p class="card-text text-muted mb-2"><strong>Subject:</strong> {{ teacher.subject }}</p>
+                        <p class="card-text small text-muted">
+                            {% if teacher.phone %}<i class="fas fa-phone"></i> {{ teacher.phone }}<br>{% endif %}
+                            {% if teacher.email %}<i class="fas fa-envelope"></i> {{ teacher.email }}{% endif %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="col-12">
+                <div class="alert alert-info border-0 shadow-sm text-center py-5">
+                    <i class="fas fa-chalkboard-teacher fa-3x mb-3 text-muted"></i>
+                    <h4>No teachers have been added yet.</h4>
+                    <p class="mb-0">Please log in to the Admin Panel to add teachers.</p>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}
