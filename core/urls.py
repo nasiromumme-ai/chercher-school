@@ -9,6 +9,8 @@ urlpatterns = [
     path('contact/', views.contact, name='contact'),
     path('gallery/', views.gallery, name='gallery'),
     path('news/<int:news_id>/', views.news_detail, name='news_detail'),
-    path('events/', views.events, name='events'), # <-- ADDED THIS LINE
+    path('events/', views.events, name='events'),
+    path('downloads/', views.downloads, name='downloads'), # <-- ADDED THIS LINE
+    path('subscribe/', views.subscribe, name='subscribe'), # <-- ADDED THIS LINE
     path('logout/', views.logout_view, name='logout'),
 ]

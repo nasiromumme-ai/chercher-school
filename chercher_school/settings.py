@@ -23,12 +23,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'import_export', # <--- ADDED HERE
+    'import_export',
     'whitenoise.runserver_nostatic',
     'core',
     'documents',
     'dashboard',
     'academics',
+    'admissions',
+    'alumni', # <--- ADDED HERE
 ]
 
 MIDDLEWARE = [

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import News, Gallery, TopStudent, SchoolStructure, ContactMessage, Event
+from .models import News, Gallery, TopStudent, SchoolStructure, ContactMessage, Event, Subscriber
 
 @admin.register(News)
 class NewsAdmin(admin.ModelAdmin):
@@ -27,10 +27,17 @@ class ContactMessageAdmin(admin.ModelAdmin):
     list_filter = ('is_read',)
     search_fields = ('name', 'email', 'subject')
 
-# --- NEW EVENT ADMIN ADDED BELOW ---
+# --- EVENT ADMIN ---
 
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
     list_display = ('title', 'date', 'time', 'location')
     list_filter = ('date',)
     search_fields = ('title', 'description')
+
+# --- NEW SUBSCRIBER ADMIN ADDED BELOW ---
+
+@admin.register(Subscriber)
+class SubscriberAdmin(admin.ModelAdmin):
+    list_display = ('email', 'subscribed_at')
+    search_fields = ('email',)

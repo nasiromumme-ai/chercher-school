@@ -10,10 +10,26 @@
     <div class="row g-4">
         {% for img in images %}
             <div class="col-md-4">
-                <div class="card h-100 shadow-sm border-0">
+                <!-- Added data-bs-toggle and data-bs-target for Lightbox -->
+                <div class="card h-100 shadow-sm border-0" data-bs-toggle="modal" data-bs-target="#imageModal{{ img.id }}" style="cursor: pointer;">
                     <img src="{{ img.image.url }}" class="card-img-top" alt="{{ img.title }}" style="height: 250px; object-fit: cover;">
                     <div class="card-body bg-light">
                         <h5 class="card-title fw-bold text-center mb-0">{{ img.title }}</h5>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal (Lightbox) for this specific image -->
+            <div class="modal fade" id="imageModal{{ img.id }}" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-xl">
+                    <div class="modal-content bg-transparent border-0">
+                        <div class="modal-header border-0 pb-0">
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body text-center">
+                            <img src="{{ img.image.url }}" class="img-fluid rounded shadow-lg" alt="{{ img.title }}">
+                            <h4 class="text-white mt-3">{{ img.title }}</h4>
+                        </div>
                     </div>
                 </div>
             </div>

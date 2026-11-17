@@ -8,7 +8,9 @@ urlpatterns = [
     path('', include('core.urls')),
     path('documents/', include('documents.urls')),
     path('dashboard/', include('dashboard.urls')),
-    path('academics/', include('academics.urls')), # <--- Add this line
+    path('academics/', include('academics.urls')),
+    path('admissions/', include('admissions.urls')),
+    path('alumni/', include('alumni.urls')), # <--- ADDED THIS LINE
 ]
 
 if settings.DEBUG:

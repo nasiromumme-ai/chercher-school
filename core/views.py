@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
-from .models import News, Gallery, TopStudent, SchoolStructure, ContactMessage, Event # <-- Event added here
+from .models import News, Gallery, TopStudent, SchoolStructure, ContactMessage, Event, Subscriber # <-- Subscriber added here
 from .forms import ContactForm
 from academics.models import Student, Teacher
 
@@ -57,8 +57,24 @@ def logout_view(request):
     logout(request)
     return redirect('/')
 
-# --- NEW EVENT VIEW ADDED BELOW ---
+# --- NEW EVENT VIEW ---
 
 def events(request):
     upcoming_events = Event.objects.all().order_by('date')
     return render(request, 'core/events.html', {'events': upcoming_events})
+
+# --- NEW DOWNLOADS VIEW ---
+
+def downloads(request):
+    return render(request, 'core/downloads.html')
+
+# --- NEW SUBSCRIBE VIEW ---
+
+def subscribe(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        if email:
+            Subscriber.objects.get_or_create(email=email)
+            # Redirect back to home with a success message
+            return redirect('/?subscribed=True')
+    return redirect('/')

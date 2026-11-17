@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Check Results — Chercher SS{% endblock %}
+{% block content %}
+<div class="container mt-5 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow border-0">
+                <div class="card-header bg-success text-white p-4">
+                    <h3 class="mb-0 fw-bold"><i class="fas fa-search"></i> Student Result Checker</h3>
+                </div>
+                <div class="card-body p-4 text-center">
+                    <p class="text-muted mb-4">Enter the student's full name exactly as registered to view their exam results.</p>
+                    <form method="post" class="mb-4">
+                        {% csrf_token %}
+                        <div class="input-group input-group-lg mb-3">
+                            <input type="text" name="student_name" class="form-control" placeholder="Enter Student Full Name" required>
+                            <button class="btn btn-success" type="submit">Search</button>
+                        </div>
+                    </form>
+
+                    {% if student_name %}
+                        {% if results %}
+                            <h4 class="text-start mt-4 border-bottom pb-2">Results for {{ student_name }}</h4>
+                            <table class="table table-hover text-start">
+                                <thead>
+                                    <tr>
+                                        <th>Subject</th>
+                                        <th>Score</th>
+                                        <th>Exam Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for result in results %}
+                                    <tr>
+                                        <td>{{ result.subject }}</td>
+                                        <td><strong class="text-primary">{{ result.score }}</strong></td>
+                                        <td>{{ result.exam_date|date:"M d, Y" }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        {% else %}
+                            <div class="alert alert-danger mt-3">No student found with that name. Please check the spelling and try again.</div>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
