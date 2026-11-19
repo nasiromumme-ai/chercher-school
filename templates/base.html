@@ -15,7 +15,6 @@
     <meta property="og:url" content="http://chercherwebsite.pythonanywhere.com/">
     <meta property="og:title" content="Chercher Secondary School">
     <meta property="og:description" content="Join the Chercher Secondary School family. Advancing knowledge and shaping the future.">
-    <!-- Updated to live URL for images -->
     <meta property="og:image" content="http://chercherwebsite.pythonanywhere.com/media/gallery/4.jpeg">
 
     <!-- Twitter -->
@@ -24,7 +23,7 @@
     <meta property="twitter:description" content="Join the Chercher Secondary School family. Advancing knowledge and shaping the future.">
     <meta property="twitter:image" content="http://chercherwebsite.pythonanywhere.com/media/gallery/4.jpeg">
 
-    <!-- Preconnect for Speed (NEW) -->
+    <!-- Preconnect for Speed -->
     <link rel="preconnect" href="https://cdn.jsdelivr.net">
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     <link rel="preconnect" href="https://images.unsplash.com">
@@ -58,6 +57,14 @@
                     <!-- CHECK RESULTS BUTTON -->
                     <li class="nav-item"><a class="nav-link text-info fw-bold" href="/academics/check-result/"><i class="fas fa-search"></i> Check Results</a></li>
                     
+                    <!-- School Anthem Audio Player (ADDED HERE) -->
+                    <li class="nav-item d-flex align-items-center me-3">
+                        <audio id="schoolAnthem" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" preload="none"></audio>
+                        <button onclick="document.getElementById('schoolAnthem').paused ? document.getElementById('schoolAnthem').play() : document.getElementById('schoolAnthem').pause();" class="btn btn-sm btn-outline-light rounded-circle" title="Play School Anthem">
+                            <i class="fas fa-music"></i>
+                        </button>
+                    </li>
+
                     {% if user.is_authenticated %}
                         <li class="nav-item"><a class="nav-link" href="/dashboard/">Dashboard</a></li>
                         <li class="nav-item"><a class="nav-link" href="/admin/">Admin Panel</a></li>

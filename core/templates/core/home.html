@@ -3,13 +3,29 @@
 
 {% block content %}
 
-<!-- Automatic Background Image Slider -->
+<!-- Image Slider (100% Reliable, No Video) -->
 <div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="4000">
     
     <div class="carousel-inner shadow">
+        
         <!-- Slide 1 -->
         <div class="carousel-item active">
             <div class="hero-image" style="background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('http://127.0.0.1:8000/media/gallery/4.jpeg') center/cover no-repeat;">
+                <div class="container h-100">
+                    <div class="row h-100 align-items-center">
+                        <div class="col-md-9 text-white py-5">
+                            <h1 class="display-4 fw-bolder mb-3 text-uppercase" style="letter-spacing: 1px;">Welcome to Chercher Secondary School</h1>
+                            <p class="lead mb-4 fs-5">Where excellence meets opportunity. Discover our vibrant campus.</p>
+                            <a href="/about/" class="btn btn-warning btn-lg px-4 py-3 fw-bold rounded-0 text-dark">Discover Our Campus</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2 -->
+        <div class="carousel-item">
+            <div class="hero-image" style="background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('http://127.0.0.1:8000/media/gallery/5.jpeg') center/cover no-repeat;">
                 <div class="container h-100">
                     <div class="row h-100 align-items-center">
                         <div class="col-md-9 text-white py-5">
@@ -22,9 +38,9 @@
             </div>
         </div>
         
-        <!-- Slide 2 -->
+        <!-- Slide 3 -->
         <div class="carousel-item">
-            <div class="hero-image" style="background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('http://127.0.0.1:8000/media/gallery/5.jpeg') center/cover no-repeat;">
+            <div class="hero-image" style="background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=2070&auto=format&fit=crop') center/cover no-repeat;">
                 <div class="container h-100">
                     <div class="row h-100 align-items-center">
                         <div class="col-md-9 text-white py-5">
@@ -47,7 +63,6 @@
     </button>
 </div>
 
-<!-- CSS to make the slider match the screenshot perfectly -->
 <style>
     .hero-image {
         height: 60vh; 
@@ -192,7 +207,6 @@
             <div class="col-md-3">
                 <div class="card h-100 border-0 shadow-sm text-center">
                     {% if student.photo %}
-                        <!-- LAZY LOADING ADDED HERE -->
                         <img src="{{ student.photo.url }}" loading="lazy" class="card-img-top" alt="{{ student.name }}" style="height: 200px; object-fit: cover;">
                     {% else %}
                         <div class="bg-dark text-white d-flex align-items-center justify-content-center" style="height: 200px;">
@@ -215,7 +229,6 @@
     <div class="row align-items-center bg-white rounded shadow-sm p-4 mb-5 border-start border-4 border-primary">
         <div class="col-md-4 text-center mb-3 mb-md-0">
             {% if director.photo %}
-                <!-- LAZY LOADING ADDED HERE -->
                 <img src="{{ director.photo.url }}" loading="lazy" class="img-fluid rounded-circle shadow" style="width: 200px; height: 200px; object-fit: cover;" alt="{{ director.name }}">
             {% else %}
                 <div class="bg-secondary text-white rounded-circle d-inline-flex align-items-center justify-content-center shadow" style="width: 200px; height: 200px;">
@@ -291,7 +304,6 @@
                     <div class="col-md-4">
                         <div class="card h-100 shadow-sm border-0">
                             {% if news.image %}
-                                <!-- LAZY LOADING ADDED HERE -->
                                 <img src="{{ news.image.url }}" class="card-img-top" alt="{{ news.title }}" loading="lazy" style="height: 200px; object-fit: cover;">
                             {% else %}
                                 <div class="bg-secondary text-white d-flex align-items-center justify-content-center" style="height: 200px;">
