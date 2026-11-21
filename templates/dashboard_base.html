@@ -143,29 +143,29 @@
                 
                 <div class="sidebar-heading mt-3">Academics</div>
                 <li>
-                    <a href="/admin/academics/student/" target="_blank">
+                    <a href="/dashboard/students/" class="{% if request.path == '/dashboard/students/' %}active{% endif %}">
                         <i class="fas fa-user-graduate"></i> Students
                     </a>
                 </li>
                 <li>
-                    <a href="/admin/academics/teacher/" target="_blank">
+                    <a href="/dashboard/teachers/" class="{% if request.path == '/dashboard/teachers/' %}active{% endif %}">
                         <i class="fas fa-chalkboard-teacher"></i> Teachers
                     </a>
                 </li>
 
                 <div class="sidebar-heading mt-3">Content</div>
                 <li>
-                    <a href="/admin/core/news/" target="_blank">
+                    <a href="/dashboard/news/" class="{% if request.path == '/dashboard/news/' %}active{% endif %}">
                         <i class="fas fa-bullhorn"></i> News & Announcements
                     </a>
                 </li>
                 <li>
-                    <a href="/admin/core/gallery/" target="_blank">
+                    <a href="/dashboard/gallery/" class="{% if request.path == '/dashboard/gallery/' %}active{% endif %}">
                         <i class="fas fa-images"></i> Gallery Images
                     </a>
                 </li>
                 <li>
-                    <a href="/admin/documents/document/" target="_blank">
+                    <a href="/dashboard/documents/" class="{% if request.path == '/dashboard/documents/' %}active{% endif %}">
                         <i class="fas fa-file-alt"></i> Documents
                     </a>
                 </li>
@@ -196,7 +196,6 @@
                 <h4 class="mb-0 text-muted">{% block page_title %}Dashboard{% endblock %}</h4>
                 <div>
                     <span class="me-3 text-muted"><i class="fas fa-user-circle"></i> {{ user.username }}</span>
-                    <!-- FIXED LOGOUT BUTTON HERE -->
                     <a href="/logout/" class="btn btn-sm btn-outline-danger"><i class="fas fa-sign-out-alt"></i> Logout</a>
                 </div>
             </div>
