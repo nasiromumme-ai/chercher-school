@@ -147,6 +147,12 @@
                         <i class="fas fa-user-graduate"></i> Students
                     </a>
                 </li>
+                <!-- NEW REGISTRATION LINK ADDED HERE -->
+                <li>
+                    <a href="/dashboard/registrations/" class="{% if request.path == '/dashboard/registrations/' %}active{% endif %}">
+                        <i class="fas fa-user-plus"></i> Student Registration
+                    </a>
+                </li>
                 <li>
                     <a href="/dashboard/teachers/" class="{% if request.path == '/dashboard/teachers/' %}active{% endif %}">
                         <i class="fas fa-chalkboard-teacher"></i> Teachers

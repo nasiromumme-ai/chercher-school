@@ -30,7 +30,8 @@ INSTALLED_APPS = [
     'dashboard',
     'academics',
     'admissions',
-    'alumni', # <--- ADDED HERE
+    'alumni',
+    'registration', # <--- ADDED HERE
 ]
 
 MIDDLEWARE = [
@@ -56,6 +57,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media',
             ],
         },
     },

@@ -30,4 +30,11 @@ urlpatterns = [
     # Users
     path('users/', views.manage_users, name='manage_users'),
     path('users/delete/<int:user_id>/', views.delete_user, name='delete_user'),
+
+    # Registration
+    path('registrations/', views.manage_registrations, name='manage_registrations'),
+    path('registrations/add/', views.add_registration, name='add_registration'),
+    path('registrations/edit/<int:pk>/', views.edit_registration, name='edit_registration'),
+    path('registrations/view/<int:pk>/', views.view_registration, name='view_registration'), # <-- NEW VIEW PATH
+    path('registrations/delete/<int:pk>/', views.delete_registration, name='delete_registration'),
 ]

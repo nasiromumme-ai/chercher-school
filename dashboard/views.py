@@ -5,7 +5,9 @@ from django.contrib.auth.models import User
 from documents.models import Document
 from core.models import News, Gallery
 from academics.models import Student, Teacher
-from admissions.models import Application # Assuming you have an Application model
+from admissions.models import Application
+from registration.models import RegisteredStudent
+from registration.forms import RegistrationForm
 
 @login_required
 def index(request):
@@ -93,3 +95,60 @@ def delete_user(request, user_id):
     if user != request.user: 
         user.delete()
     return redirect('dashboard:manage_users')
+
+# --- STUDENT REGISTRATION (WITH SEARCH FILTERS) ---
+
+@login_required
+def manage_registrations(request):
+    students = RegisteredStudent.objects.all()
+    
+    # Search filters
+    grade = request.GET.get('grade')
+    program = request.GET.get('program')
+    
+    if grade:
+        students = students.filter(grade=grade)
+    if program:
+        students = students.filter(program=program)
+        
+    return render(request, 'dashboard/manage_registrations.html', {
+        'students': students,
+        'selected_grade': grade,
+        'selected_program': program
+    })
+
+@login_required
+def add_registration(request):
+    if request.method == 'POST':
+        form = RegistrationForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('dashboard:manage_registrations')
+    else:
+        form = RegistrationForm()
+    return render(request, 'dashboard/add_registration.html', {'form': form})
+
+@login_required
+def edit_registration(request, pk):
+    student = get_object_or_404(RegisteredStudent, pk=pk)
+    if request.method == 'POST':
+        form = RegistrationForm(request.POST, request.FILES, instance=student)
+        if form.is_valid():
+            form.save()
+            return redirect('dashboard:manage_registrations')
+    else:
+        form = RegistrationForm(instance=student)
+    return render(request, 'dashboard/add_registration.html', {'form': form})
+
+@login_required
+def delete_registration(request, pk):
+    student = get_object_or_404(RegisteredStudent, pk=pk)
+    student.delete()
+    return redirect('dashboard:manage_registrations')
+
+# --- NEW VIEW REGISTRATION FUNCTION ---
+
+@login_required
+def view_registration(request, pk):
+    student = get_object_or_404(RegisteredStudent, pk=pk)
+    return render(request, 'dashboard/view_registration.html', {'student': student})
