@@ -12,26 +12,47 @@
 <div class="card border-0 shadow-sm mb-4">
     <div class="card-body">
         <form method="get" class="row g-3 align-items-end">
-            <div class="col-md-4">
-                <label class="form-label fw-bold">Filter by Grade</label>
-                <select name="grade" class="form-select">
-                    <option value="">All Grades</option>
-                    <option value="9" {% if selected_grade == '9' %}selected{% endif %}>Grade 9</option>
-                    <option value="10" {% if selected_grade == '10' %}selected{% endif %}>Grade 10</option>
-                    <option value="11" {% if selected_grade == '11' %}selected{% endif %}>Grade 11</option>
-                    <option value="12" {% if selected_grade == '12' %}selected{% endif %}>Grade 12</option>
+            <!-- Search by Name/ID -->
+            <div class="col-md-3">
+                <label class="form-label fw-bold">Search</label>
+                <input type="text" name="search_query" class="form-control" placeholder="Name or Student ID..." value="{{ search_query|default:'' }}">
+            </div>
+            
+            <!-- Filter by Gender -->
+            <div class="col-md-2">
+                <label class="form-label fw-bold">Gender</label>
+                <select name="gender" class="form-select">
+                    <option value="">All</option>
+                    <option value="Male" {% if selected_gender == 'Male' %}selected{% endif %}>Male</option>
+                    <option value="Female" {% if selected_gender == 'Female' %}selected{% endif %}>Female</option>
                 </select>
             </div>
-            <div class="col-md-4">
-                <label class="form-label fw-bold">Filter by Program</label>
+
+            <!-- Filter by Grade -->
+            <div class="col-md-2">
+                <label class="form-label fw-bold">Grade</label>
+                <select name="grade" class="form-select">
+                    <option value="">All</option>
+                    <option value="9" {% if selected_grade == '9' %}selected{% endif %}>9</option>
+                    <option value="10" {% if selected_grade == '10' %}selected{% endif %}>10</option>
+                    <option value="11" {% if selected_grade == '11' %}selected{% endif %}>11</option>
+                    <option value="12" {% if selected_grade == '12' %}selected{% endif %}>12</option>
+                </select>
+            </div>
+
+            <!-- Filter by Program -->
+            <div class="col-md-2">
+                <label class="form-label fw-bold">Program</label>
                 <select name="program" class="form-select">
-                    <option value="">All Programs</option>
+                    <option value="">All</option>
                     <option value="Regular" {% if selected_program == 'Regular' %}selected{% endif %}>Regular</option>
                     <option value="Night" {% if selected_program == 'Night' %}selected{% endif %}>Night</option>
                     <option value="Weekend" {% if selected_program == 'Weekend' %}selected{% endif %}>Weekend</option>
                 </select>
             </div>
-            <div class="col-md-4">
+
+            <!-- Search Button -->
+            <div class="col-md-3">
                 <button type="submit" class="btn btn-primary w-100"><i class="fas fa-search"></i> Search</button>
             </div>
         </form>
@@ -70,7 +91,6 @@
                         <td><span class="badge bg-info text-dark">{{ student.program }}</span></td>
                         <td>{{ student.phone_number }}</td>
                         <td class="text-end">
-                            <!-- FIXED VIEW BUTTON -->
                             <a href="{% url 'dashboard:view_registration' student.id %}" class="btn btn-sm btn-outline-info" title="View Details">
                                 <i class="fas fa-eye"></i>
                             </a>

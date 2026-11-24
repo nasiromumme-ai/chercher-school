@@ -2,12 +2,14 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.models import User
+from django.db import models
 from documents.models import Document
 from core.models import News, Gallery
 from academics.models import Student, Teacher
 from admissions.models import Application
 from registration.models import RegisteredStudent
 from registration.forms import RegistrationForm
+from reports.models import MonthlyReport  # <--- IMPORT ADDED HERE
 
 @login_required
 def index(request):
@@ -102,19 +104,33 @@ def delete_user(request, user_id):
 def manage_registrations(request):
     students = RegisteredStudent.objects.all()
     
-    # Search filters
+    # Get search parameters from the URL
     grade = request.GET.get('grade')
     program = request.GET.get('program')
+    gender = request.GET.get('gender')
+    search_query = request.GET.get('search_query')
     
+    # Apply filters
     if grade:
         students = students.filter(grade=grade)
     if program:
         students = students.filter(program=program)
+    if gender:
+        students = students.filter(gender=gender)
+    if search_query:
+        # Search by first name, last name, or student ID
+        students = students.filter(
+            models.Q(first_name__icontains=search_query) |
+            models.Q(last_name__icontains=search_query) |
+            models.Q(student_id__icontains=search_query)
+        )
         
     return render(request, 'dashboard/manage_registrations.html', {
         'students': students,
         'selected_grade': grade,
-        'selected_program': program
+        'selected_program': program,
+        'selected_gender': gender,
+        'search_query': search_query,
     })
 
 @login_required
@@ -146,9 +162,44 @@ def delete_registration(request, pk):
     student.delete()
     return redirect('dashboard:manage_registrations')
 
-# --- NEW VIEW REGISTRATION FUNCTION ---
+# --- VIEW REGISTRATION ---
 
 @login_required
 def view_registration(request, pk):
     student = get_object_or_404(RegisteredStudent, pk=pk)
     return render(request, 'dashboard/view_registration.html', {'student': student})
+
+# --- MONTHLY REPORTS (NEW) ---
+
+@login_required
+def manage_reports(request):
+    reports = MonthlyReport.objects.all()
+    
+    # Filters
+    month = request.GET.get('month')
+    year = request.GET.get('year')
+    grade = request.GET.get('grade')
+    
+    if month:
+        reports = reports.filter(month=month)
+    if year:
+        reports = reports.filter(year=year)
+    if grade:
+        reports = reports.filter(grade__icontains=grade)
+        
+    # Get unique years for filter
+    years = MonthlyReport.objects.values_list('year', flat=True).distinct().order_by('-year')
+    
+    return render(request, 'dashboard/manage_reports.html', {
+        'reports': reports,
+        'selected_month': month,
+        'selected_year': year,
+        'selected_grade': grade,
+        'years': years,
+    })
+
+@login_required
+def delete_report(request, report_id):
+    report = get_object_or_404(MonthlyReport, id=report_id)
+    report.delete()
+    return redirect('dashboard:manage_reports')

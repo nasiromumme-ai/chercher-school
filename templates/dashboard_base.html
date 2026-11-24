@@ -147,7 +147,6 @@
                         <i class="fas fa-user-graduate"></i> Students
                     </a>
                 </li>
-                <!-- STUDENT REGISTRATION LINK ADDED HERE -->
                 <li>
                     <a href="/dashboard/registrations/" class="{% if request.path == '/dashboard/registrations/' %}active{% endif %}">
                         <i class="fas fa-user-plus"></i> Student Registration
@@ -173,6 +172,12 @@
                 <li>
                     <a href="/dashboard/documents/" class="{% if request.path == '/dashboard/documents/' %}active{% endif %}">
                         <i class="fas fa-file-alt"></i> Documents
+                    </a>
+                </li>
+                <!-- MONTHLY REPORTS LINK ADDED HERE -->
+                <li>
+                    <a href="/dashboard/reports/" class="{% if request.path == '/dashboard/reports/' %}active{% endif %}">
+                        <i class="fas fa-file-pdf"></i> Monthly Reports
                     </a>
                 </li>
 

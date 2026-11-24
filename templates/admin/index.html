@@ -1,0 +1,167 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block extrastyle %}
+{{ block.super }}
+<style>
+  .chercher-admin-wrap {
+    padding: 8px 4px 24px 4px;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  .chercher-hero {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(135deg, #1e3a5f 0%, #2b5876 100%);
+    color: #fff;
+    padding: 20px 24px;
+    border-radius: 12px;
+    margin-bottom: 22px;
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.12);
+  }
+  .chercher-hero h1 {
+    margin: 0 0 4px 0;
+    font-size: 1.45rem;
+    font-weight: 700;
+    color: #fff;
+  }
+  .chercher-hero p {
+    margin: 0;
+    font-size: 0.92rem;
+    opacity: 0.9;
+  }
+  .chercher-quick-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .chercher-btn {
+    display: inline-block;
+    padding: 9px 15px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.88rem;
+    text-decoration: none;
+    transition: transform 0.12s ease, opacity 0.12s ease;
+  }
+  .chercher-btn:hover {
+    transform: translateY(-1px);
+    opacity: 0.95;
+  }
+  .chercher-btn-primary {
+    background: #10b981;
+    color: #fff !important;
+  }
+  .chercher-btn-light {
+    background: rgba(255, 255, 255, 0.16);
+    color: #fff !important;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+  }
+  .chercher-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+    gap: 18px;
+  }
+  .chercher-card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 18px 20px;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
+  }
+  .chercher-card h2 {
+    margin: 0 0 14px 0;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #0f172a;
+    border-bottom: 2px solid #f1f5f9;
+    padding-bottom: 8px;
+  }
+  .chercher-model-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 9px 6px;
+    border-bottom: 1px solid #f1f5f9;
+  }
+  .chercher-model-row:last-child {
+    border-bottom: none;
+  }
+  .chercher-model-name {
+    font-weight: 600;
+    color: #1e293b;
+    text-decoration: none;
+    font-size: 0.95rem;
+  }
+  .chercher-model-name:hover {
+    color: #1d4ed8;
+    text-decoration: underline;
+  }
+  .chercher-row-actions a {
+    margin-left: 8px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .chercher-add-link {
+    background: #eff6ff;
+    color: #1d4ed8 !important;
+  }
+  .chercher-change-link {
+    background: #f8fafc;
+    color: #334155 !important;
+    border: 1px solid #cbd5e1;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div id="content-main" class="chercher-admin-wrap">
+  <div class="chercher-hero">
+    <div>
+      <h1>Chercher SS — School Admin</h1>
+      <p>Manage Grades 9–12 subjects, streams, students, teachers, and exam results comfortably.</p>
+    </div>
+    <div class="chercher-quick-actions">
+      <a href="{% url 'admin:academics_subject_add' %}" class="chercher-btn chercher-btn-primary">+ Add Subject</a>
+      <a href="{% url 'admin:academics_student_add' %}" class="chercher-btn chercher-btn-light">+ Add Student</a>
+      <a href="{% url 'admin:academics_studentresult_add' %}" class="chercher-btn chercher-btn-light">+ Enter Result</a>
+    </div>
+  </div>
+
+  {% if app_list %}
+    <div class="chercher-grid">
+      {% for app in app_list %}
+        <div class="chercher-card">
+          <h2>{{ app.name }}</h2>
+          {% for model in app.models %}
+            <div class="chercher-model-row">
+              {% if model.admin_url %}
+                <a href="{{ model.admin_url }}" class="chercher-model-name">{{ model.name }}</a>
+              {% else %}
+                <span class="chercher-model-name">{{ model.name }}</span>
+              {% endif %}
+
+              <div class="chercher-row-actions">
+                {% if model.add_url %}
+                  <a href="{{ model.add_url }}" class="chercher-add-link">Add</a>
+                {% endif %}
+                {% if model.admin_url %}
+                  <a href="{{ model.admin_url }}" class="chercher-change-link">View / Edit</a>
+                {% endif %}
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p>{% translate "You don't have permission to view or edit anything." %}</p>
+  {% endif %}
+</div>
+{% endblock %}
+
+{% block sidebar %}{% endblock %}
