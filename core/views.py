@@ -93,7 +93,7 @@ def subscribe(request):
 # --- NEW PUBLIC REPORTS VIEW ---
 
 def public_reports(request):
-    reports = MonthlyReport.objects.all()
+    reports = MonthlyReport.objects.all().order_by('-uploaded_at', '-id')
 
     month = request.GET.get('month')
     year = request.GET.get('year')

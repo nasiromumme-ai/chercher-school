@@ -51,10 +51,19 @@
         <div class="col-md-6">
             <div class="card border-0 shadow-sm h-100">
                 <div class="card-body p-4">
-                    <div class="d-flex justify-content-between align-items-start gap-2 mb-3">
-                        <h4 class="fw-bold text-primary mb-0">{{ report.title }}</h4>
+                    <!-- TOP STATUS / PERIOD BAR -->
+                    <div class="d-flex justify-content-between align-items-center gap-2 mb-2">
+                        <div>
+                            {% if forloop.first %}
+                                <span class="badge bg-danger text-uppercase me-1">
+                                    <i class="fas fa-sparkles me-1"></i> New Report
+                                </span>
+                            {% endif %}
+                        </div>
                         <span class="badge bg-dark fs-6">{{ report.month }} {{ report.year }}</span>
                     </div>
+
+                    <h4 class="fw-bold text-primary mb-3">{{ report.title }}</h4>
                     <p class="text-muted mb-2"><i class="fas fa-graduation-cap"></i> <strong>Grade:</strong> {{ report.grade|default:"All Grades" }}</p>
                     <p class="text-muted mb-4"><i class="far fa-calendar-alt"></i> <strong>Uploaded:</strong> {{ report.uploaded_at|date:"F d, Y" }}</p>
 
