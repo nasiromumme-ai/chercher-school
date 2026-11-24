@@ -80,6 +80,13 @@
     .carousel-fade .carousel-item {
         transition-duration: 1s; 
     }
+    .feature-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .feature-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+    }
 </style>
 
 <!-- THE REST OF YOUR HOMEPAGE -->
@@ -193,17 +200,6 @@
         </div>
     </div>
 
-    <!-- Hover Animation CSS for Why Choose Us -->
-    <style>
-        .feature-card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .feature-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
-        }
-    </style>
-
     <!-- Top Students Preview on Homepage -->
     {% if top_students %}
     <div class="row mb-5">
@@ -233,7 +229,7 @@
     </div>
     {% endif %}
 
-    <!-- Director's Message Section on Homepage -->
+    <!-- Director's Message Section on Homepage (Inline Read More) -->
     {% if director %}
     <div class="row align-items-center bg-white rounded shadow-sm p-4 mb-5 border-start border-4 border-primary">
         <div class="col-md-4 text-center mb-3 mb-md-0">
@@ -248,8 +244,15 @@
         <div class="col-md-8">
             <h3 class="fw-bold text-primary mb-1">A Message from the {{ director.role }}</h3>
             <h6 class="text-muted mb-3">{{ director.name }}</h6>
-            <p class="lead" style="font-style: italic; font-size: 1.1rem;">"{{ director.message|truncatewords:45 }}"</p>
-            <a href="/about/" class="btn btn-outline-primary btn-sm mt-2">Read Full Message &rarr;</a>
+            <div class="read-more-wrapper">
+                <p class="lead short-text mb-2" style="font-style: italic; font-size: 1.1rem;">"{{ director.message|truncatewords:45 }}"</p>
+                <div class="full-text d-none" style="font-style: italic; font-size: 1.1rem;">
+                    {{ director.message|linebreaks }}
+                </div>
+                {% if director.message|wordcount > 45 %}
+                    <button type="button" class="btn btn-outline-primary btn-sm mt-1 toggle-read-more">Read More</button>
+                {% endif %}
+            </div>
         </div>
     </div>
     {% endif %}
@@ -326,8 +329,14 @@
                                     {% endif %}
                                     <span class="badge bg-primary mb-1">{{ item.get_category_display }}</span>
                                     <h6 class="fw-bold mb-1">{{ item.title }}</h6>
-                                    <p class="text-muted small mb-1">{{ item.summary|truncatewords:14 }}</p>
-                                    <small class="text-muted d-block"><i class="far fa-calendar-alt"></i> {{ item.date_recorded|date:"M d, Y" }}</small>
+                                    <div class="read-more-wrapper">
+                                        <p class="text-muted small short-text mb-1">{{ item.summary|truncatewords:14 }}</p>
+                                        <div class="text-muted small full-text d-none mb-1">{{ item.summary|linebreaksbr }}</div>
+                                        {% if item.summary|wordcount > 14 %}
+                                            <button type="button" class="btn btn-link btn-sm p-0 text-decoration-none toggle-read-more">Read More</button>
+                                        {% endif %}
+                                    </div>
+                                    <small class="text-muted d-block mt-1"><i class="far fa-calendar-alt"></i> {{ item.date_recorded|date:"M d, Y" }}</small>
                                 </div>
                             </div>
                         {% empty %}
@@ -348,11 +357,20 @@
                     <ul class="list-group list-group-flush mb-4">
                         {% for decision in staff_decisions %}
                             <li class="list-group-item px-0">
+                                {% if decision.photo %}
+                                    <img src="{{ decision.photo.url }}" loading="lazy" alt="{{ decision.title }}" class="img-fluid rounded mb-2" style="max-height: 180px; width: 100%; object-fit: cover;">
+                                {% endif %}
                                 <div class="d-flex justify-content-between align-items-start">
                                     <span class="fw-bold">{{ decision.title }}</span>
                                     <small class="text-muted ms-2">{{ decision.date_recorded|date:"M d, Y" }}</small>
                                 </div>
-                                <p class="mb-0 text-muted small mt-1">{{ decision.summary }}</p>
+                                <div class="read-more-wrapper mt-1">
+                                    <p class="mb-1 text-muted small short-text">{{ decision.summary|truncatewords:22 }}</p>
+                                    <div class="mb-1 text-muted small full-text d-none">{{ decision.summary|linebreaksbr }}</div>
+                                    {% if decision.summary|wordcount > 22 %}
+                                        <button type="button" class="btn btn-link btn-sm p-0 text-decoration-none toggle-read-more">Read More</button>
+                                    {% endif %}
+                                </div>
                             </li>
                         {% empty %}
                             <li class="list-group-item px-0 text-muted">No staff meeting decisions posted yet.</li>
@@ -363,11 +381,17 @@
                     {% for coop in cooperation_posts %}
                         <div class="border-start border-4 border-warning ps-3 mb-3">
                             {% if coop.photo %}
-                                <img src="{{ coop.photo.url }}" loading="lazy" alt="{{ coop.title }}" class="img-fluid rounded mb-2" style="max-height: 150px; width: 100%; object-fit: cover;">
+                                <img src="{{ coop.photo.url }}" loading="lazy" alt="{{ coop.title }}" class="img-fluid rounded mb-2" style="max-height: 180px; width: 100%; object-fit: cover;">
                             {% endif %}
                             <div class="fw-bold">{{ coop.title }}</div>
                             <small class="text-muted d-block mb-1">{{ coop.date_recorded|date:"M d, Y" }}</small>
-                            <p class="mb-0 text-muted small">{{ coop.summary }}</p>
+                            <div class="read-more-wrapper">
+                                <p class="mb-1 text-muted small short-text">{{ coop.summary|truncatewords:22 }}</p>
+                                <div class="mb-1 text-muted small full-text d-none">{{ coop.summary|linebreaksbr }}</div>
+                                {% if coop.summary|wordcount > 22 %}
+                                    <button type="button" class="btn btn-link btn-sm p-0 text-decoration-none toggle-read-more">Read More</button>
+                                {% endif %}
+                            </div>
                         </div>
                     {% empty %}
                         <p class="text-muted mb-0">No teacher–student cooperation highlights posted yet.</p>
@@ -377,10 +401,10 @@
         </div>
     </div>
 
-    <!-- Latest News Section -->
+    <!-- Latest News Section (Inline Read More) -->
     <div class="row mb-5">
         <div class="col-12 d-flex justify-content-between align-items-center mb-4">
-            <h2 class="fw-bold">Latest News & Announcements</h2>
+            <h2 class="fw-bold">Latest News &amp; Announcements</h2>
         </div>
         
         {% if latest_news %}
@@ -398,8 +422,13 @@
                             <div class="card-body">
                                 <h5 class="card-title fw-bold">{{ news.title }}</h5>
                                 <p class="card-text text-muted small"><i class="far fa-calendar-alt"></i> {{ news.created_at|date:"F d, Y" }}</p>
-                                <p class="card-text">{{ news.content|truncatewords:15 }}</p>
-                                <a href="{% url 'core:news_detail' news.id %}" class="btn btn-primary btn-sm mt-2">Read More &rarr;</a>
+                                <div class="read-more-wrapper">
+                                    <p class="card-text short-text">{{ news.content|truncatewords:15 }}</p>
+                                    <div class="card-text full-text d-none">{{ news.content|linebreaks }}</div>
+                                    {% if news.content|wordcount > 15 %}
+                                        <button type="button" class="btn btn-primary btn-sm mt-2 toggle-read-more">Read More</button>
+                                    {% endif %}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -410,5 +439,28 @@
         {% endif %}
     </div>
 </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".toggle-read-more").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+            const wrapper = btn.closest(".read-more-wrapper");
+            const shortText = wrapper.querySelector(".short-text");
+            const fullText = wrapper.querySelector(".full-text");
+            const isHidden = fullText.classList.contains("d-none");
+
+            if (isHidden) {
+                shortText.classList.add("d-none");
+                fullText.classList.remove("d-none");
+                btn.textContent = "Show Less";
+            } else {
+                fullText.classList.add("d-none");
+                shortText.classList.remove("d-none");
+                btn.textContent = "Read More";
+            }
+        });
+    });
+});
+</script>
 
 {% endblock %}
