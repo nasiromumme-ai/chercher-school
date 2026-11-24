@@ -4,7 +4,16 @@ from django.http import FileResponse, Http404, HttpResponseForbidden
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
-from .models import News, Gallery, TopStudent, SchoolStructure, ContactMessage, Event, Subscriber
+from .models import (
+    News,
+    Gallery,
+    TopStudent,
+    SchoolStructure,
+    ContactMessage,
+    Event,
+    Subscriber,
+    SchoolHighlight,
+)
 from .forms import ContactForm
 from academics.models import Student, Teacher
 from reports.models import MonthlyReport
@@ -19,12 +28,30 @@ def home(request):
     total_students = Student.objects.count()
     total_teachers = Teacher.objects.count()
 
+    meeting_photos = SchoolHighlight.objects.filter(
+        is_published=True,
+        category__in=['weekly_meeting', 'monthly_meeting'],
+    )[:4]
+
+    staff_decisions = SchoolHighlight.objects.filter(
+        is_published=True,
+        category='staff_decision',
+    )[:5]
+
+    cooperation_posts = SchoolHighlight.objects.filter(
+        is_published=True,
+        category='student_cooperation',
+    )[:4]
+
     return render(request, 'core/home.html', {
         'latest_news': latest_news,
         'top_students': top_students,
         'director': director,
         'total_students': total_students,
         'total_teachers': total_teachers,
+        'meeting_photos': meeting_photos,
+        'staff_decisions': staff_decisions,
+        'cooperation_posts': cooperation_posts,
     })
 
 

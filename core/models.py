@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class News(models.Model):
     title = models.CharField(max_length=200)
     content = models.TextField()
@@ -12,6 +13,7 @@ class News(models.Model):
     def __str__(self):
         return self.title
 
+
 class Gallery(models.Model):
     title = models.CharField(max_length=100)
     image = models.ImageField(upload_to='gallery/')
@@ -22,6 +24,7 @@ class Gallery(models.Model):
 
     def __str__(self):
         return self.title
+
 
 # --- NEW MODELS ADDED BELOW ---
 
@@ -39,6 +42,7 @@ class TopStudent(models.Model):
     def __str__(self):
         return f"{self.name} ({self.year})"
 
+
 class SchoolStructure(models.Model):
     role = models.CharField(max_length=100, help_text="e.g., Director, Vice Director")
     name = models.CharField(max_length=100)
@@ -50,6 +54,7 @@ class SchoolStructure(models.Model):
 
     def __str__(self):
         return f"{self.role} - {self.name}"
+
 
 # --- CONTACT FORM MODEL ---
 
@@ -68,6 +73,7 @@ class ContactMessage(models.Model):
     def __str__(self):
         return f"{self.subject} - {self.name}"
 
+
 # --- NEW EVENT MODEL ---
 
 class Event(models.Model):
@@ -84,6 +90,7 @@ class Event(models.Model):
     def __str__(self):
         return f"{self.title} - {self.date}"
 
+
 # --- NEW SUBSCRIBER MODEL ---
 
 class Subscriber(models.Model):
@@ -92,3 +99,28 @@ class Subscriber(models.Model):
 
     def __str__(self):
         return self.email
+
+
+# --- MEETINGS, DECISIONS & STUDENT COOPERATION MODEL ---
+
+class SchoolHighlight(models.Model):
+    CATEGORY_CHOICES = [
+        ('weekly_meeting', 'Weekly Meeting Photo'),
+        ('monthly_meeting', 'Monthly Meeting Photo'),
+        ('staff_decision', 'Staff Meeting Decision'),
+        ('student_cooperation', 'Teacher & Student Cooperation'),
+    ]
+
+    category = models.CharField(max_length=30, choices=CATEGORY_CHOICES)
+    title = models.CharField(max_length=200)
+    summary = models.TextField(help_text="Meeting decisions, key notes, or cooperation highlights.")
+    photo = models.ImageField(upload_to='highlights/', blank=True, null=True)
+    date_recorded = models.DateField(auto_now_add=True)
+    is_published = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ['-date_recorded', '-id']
+        verbose_name_plural = "School Highlights"
+
+    def __str__(self):
+        return f"{self.get_category_display()} - {self.title}"
