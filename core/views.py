@@ -20,7 +20,7 @@ from reports.models import MonthlyReport
 
 
 def home(request):
-    latest_news = News.objects.all().order_by('-created_at')[:3]
+    latest_news = News.objects.all().order_by('-created_at')[:6]
     top_students = TopStudent.objects.all()[:4]
 
     director = SchoolStructure.objects.filter(role__icontains='Director').first()
@@ -31,17 +31,17 @@ def home(request):
     meeting_photos = SchoolHighlight.objects.filter(
         is_published=True,
         category__in=['weekly_meeting', 'monthly_meeting'],
-    )[:4]
+    ).order_by('-date_recorded', '-id')[:12]
 
     staff_decisions = SchoolHighlight.objects.filter(
         is_published=True,
         category='staff_decision',
-    )[:5]
+    ).order_by('-date_recorded', '-id')[:12]
 
     cooperation_posts = SchoolHighlight.objects.filter(
         is_published=True,
         category='student_cooperation',
-    )[:4]
+    ).order_by('-date_recorded', '-id')[:12]
 
     return render(request, 'core/home.html', {
         'latest_news': latest_news,
