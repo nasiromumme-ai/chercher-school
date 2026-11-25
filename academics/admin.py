@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.utils.html import format_html
+from django.utils.safestring import mark_safe
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 from .models import Subject, Teacher, Student, StudentResult
@@ -95,6 +96,7 @@ class StudentResultResource(resources.ModelResource):
 @admin.register(StudentResult)
 class StudentResultAdmin(ImportExportModelAdmin):
     resource_class = StudentResultResource
+    fields = ('student', 'semester', 'section', 'academic_year', 'subject_ref', 'subject', 'score', 'exam_date')
     list_display = (
         'get_student_id',
         'get_student_name',
@@ -127,12 +129,11 @@ class StudentResultAdmin(ImportExportModelAdmin):
     @admin.display(description='Semester', ordering='semester')
     def semester_badge(self, obj):
         if obj.semester == 1:
-            bg, fg, label = ('#e0e7ff', '#3730a3', 'Sem 1')
-        else:
-            bg, fg, label = ('#fef3c7', '#92400e', 'Sem 2')
-        return format_html(
-            '<span style="background:{};color:{};padding:3px 9px;border-radius:999px;font-weight:600;font-size:0.78rem;display:inline-block;">{}</span>',
-            bg, fg, label
+            return mark_safe(
+                '<span style="background:#e0e7ff;color:#3730a3;padding:3px 9px;border-radius:999px;font-weight:600;font-size:0.78rem;display:inline-block;">Sem 1</span>'
+            )
+        return mark_safe(
+            '<span style="background:#fef3c7;color:#92400e;padding:3px 9px;border-radius:999px;font-weight:600;font-size:0.78rem;display:inline-block;">Sem 2</span>'
         )
 
     @admin.display(description='Score', ordering='score')
