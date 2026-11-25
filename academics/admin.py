@@ -54,16 +54,16 @@ class SubjectAdmin(ImportExportModelAdmin):
 class StudentResource(resources.ModelResource):
     class Meta:
         model = Student
-        fields = ('name', 'grade', 'stream', 'parent_phone')
+        fields = ('name', 'grade', 'section', 'stream', 'parent_phone')
         import_id_fields = ('name',)
 
 
 @admin.register(Student)
 class StudentAdmin(ImportExportModelAdmin):
     resource_class = StudentResource
-    list_display = ('name', 'grade', 'stream', 'parent_phone')
-    search_fields = ('name', 'grade', 'stream')
-    list_filter = ('grade', 'stream')
+    list_display = ('name', 'grade', 'section', 'stream', 'parent_phone')
+    search_fields = ('name', 'grade', 'section', 'stream')
+    list_filter = ('grade', 'section', 'stream')
     filter_horizontal = ('subjects',)
 
     class Media:
@@ -85,14 +85,31 @@ class TeacherAdmin(ImportExportModelAdmin):
     list_filter = ('department',)
 
 
-# --- UPDATED RESULT ADMIN (SHOWS STUDENT ID & SUBJECT) ---
+# Setup for Student Results (Semester 1 & 2, Section, Class Rank)
+class StudentResultResource(resources.ModelResource):
+    class Meta:
+        model = StudentResult
+        fields = ('id', 'student__student_id', 'subject_ref', 'subject', 'semester', 'section', 'academic_year', 'score', 'exam_date')
+
 
 @admin.register(StudentResult)
-class StudentResultAdmin(admin.ModelAdmin):
-    list_display = ('get_student_id', 'get_student_name', 'subject_ref', 'subject', 'score_badge', 'exam_date')
-    list_filter = ('subject_ref__grade', 'subject_ref__stream', 'subject', 'exam_date')
-    search_fields = ('student__student_id', 'student__first_name', 'student__last_name', 'subject', 'subject_ref__name')
-    autocomplete_fields = ('subject_ref',)
+class StudentResultAdmin(ImportExportModelAdmin):
+    resource_class = StudentResultResource
+    list_display = (
+        'get_student_id',
+        'get_student_name',
+        'get_class_label',
+        'semester_badge',
+        'subject_ref',
+        'subject',
+        'score_badge',
+        'academic_year',
+        'exam_date',
+    )
+    list_filter = ('semester', 'section', 'academic_year', 'subject_ref__grade', 'subject_ref__stream', 'subject', 'exam_date')
+    search_fields = ('student__student_id', 'student__first_name', 'student__last_name', 'section', 'subject', 'subject_ref__name')
+    autocomplete_fields = ('student', 'subject_ref')
+    ordering = ('-academic_year', 'semester', 'section', 'student__student_id', 'subject')
     list_per_page = 30
 
     @admin.display(description='Student ID', ordering='student__student_id')
@@ -102,6 +119,20 @@ class StudentResultAdmin(admin.ModelAdmin):
     @admin.display(description='Student Name')
     def get_student_name(self, obj):
         return f"{obj.student.first_name} {obj.student.last_name}"
+
+    @admin.display(description='Class', ordering='section')
+    def get_class_label(self, obj):
+        return obj.class_label
+
+    @admin.display(description='Semester', ordering='semester')
+    def semester_badge(self, obj):
+        if obj.semester == 1:
+            return format_html(
+                '<span style="background:#e0e7ff;color:#3730a3;padding:3px 9px;border-radius:999px;font-weight:600;font-size:0.78rem;display:inline-block;">Sem 1</span>'
+            )
+        return format_html(
+            '<span style="background:#fef3c7;color:#92400e;padding:3px 9px;border-radius:999px;font-weight:600;font-size:0.78rem;display:inline-block;">Sem 2</span>'
+        )
 
     @admin.display(description='Score', ordering='score')
     def score_badge(self, obj):
