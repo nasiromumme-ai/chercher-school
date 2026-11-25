@@ -127,11 +127,12 @@ class StudentResultAdmin(ImportExportModelAdmin):
     @admin.display(description='Semester', ordering='semester')
     def semester_badge(self, obj):
         if obj.semester == 1:
-            return format_html(
-                '<span style="background:#e0e7ff;color:#3730a3;padding:3px 9px;border-radius:999px;font-weight:600;font-size:0.78rem;display:inline-block;">Sem 1</span>'
-            )
+            bg, fg, label = ('#e0e7ff', '#3730a3', 'Sem 1')
+        else:
+            bg, fg, label = ('#fef3c7', '#92400e', 'Sem 2')
         return format_html(
-            '<span style="background:#fef3c7;color:#92400e;padding:3px 9px;border-radius:999px;font-weight:600;font-size:0.78rem;display:inline-block;">Sem 2</span>'
+            '<span style="background:{};color:{};padding:3px 9px;border-radius:999px;font-weight:600;font-size:0.78rem;display:inline-block;">{}</span>',
+            bg, fg, label
         )
 
     @admin.display(description='Score', ordering='score')
