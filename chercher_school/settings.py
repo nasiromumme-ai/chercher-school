@@ -11,7 +11,15 @@ SECRET_KEY = 'django-insecure-chercher-school-change-me-in-production'
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+ALLOWED_HOSTS = [
+    '127.0.0.1',
+    'localhost',
+    'chercherschoolwebsite.pythonanywhere.com',
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://chercherschoolwebsite.pythonanywhere.com',
+]
 
 # Application definition
 
@@ -31,7 +39,7 @@ INSTALLED_APPS = [
     'admissions',
     'alumni',
     'registration',
-    'reports', # <--- ADDED HERE
+    'reports',
 ]
 
 MIDDLEWARE = [
